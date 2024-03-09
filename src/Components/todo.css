@@ -1,0 +1,45 @@
+.outer{
+text-align: center;
+
+}
+
+.addtodo>input{
+    height: 30px;
+    /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
+    width: 30%;
+    /* margin-left: 25%; */
+}
+
+.addtodo>button{
+    background-color: blue;
+    color: white;
+    border: none;
+    height: 38px;
+    width: 100px;
+    font-size: large;
+    font-weight: 700;
+}
+    
+
+
+.todolist{
+    width:30%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    justify-content: space-between;
+    gap: 10px;
+    margin-left: 35%;
+   
+}
+
+.todoitem
+{
+    background-color: white;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;  
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; 
+    padding: 10px;
+}
+
