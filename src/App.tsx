@@ -1,36 +1,71 @@
 import React, { useState } from 'react';
 import TodoList from './Components/TodoList';
-import  "./Components/todo.css"
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 const App= () => {
-  const [todos, setTodos] = useState<{ id: number; title: string }[]>([]);
+  const [todos, setTodos] = useState<{ id: number; title: string, completed:boolean }[]>([]);
   const [inputText, setInputText] = useState('');
 
-  const handleDeleteTodo = (id: number) => {
-    setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+  interface Todo{
+    id: number;
+    title: string;
+    completed:boolean;
+}
+
+// add text
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputText(event.target.value);
+  };
+
+  // form submit handler
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (inputText.trim() !== '') {
+      const newTodo: Todo = {
+        id: Date.now(),
+        title: inputText,
+        completed:false
+      };
+      setTodos([...todos, newTodo]);
+      setInputText('');
+    }
+  };
+
+  // delete todo
+  const handleTodoDelete = (id: number) => {
+    setTodos(todos.filter(el=>el.id!==id));
+  };
+
+  // toggle todo
+  const handleToggleStatus = (id: number) => {
+    const updatedTodos = todos.map(todo =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    );
+    setTodos(updatedTodos);
   };
 
   return (
-    <div className='outer'>
-      <h1 style={{}}>Todo App</h1>
-      <div className='addtodo'>
-      <input
-        type="text"
-        value={inputText}
-        onChange={e => setInputText(e.target.value)}
-      />
-      <button onClick={() => {
-        if (inputText.trim() !== '') {
-          setTodos(prevTodos => [
-            ...prevTodos,
-            { id: Date.now(), title: inputText }
-          ]);
-          setInputText('');
-        }
-        }}>Add Todo</button>
-        </div>
-      <TodoList todos={todos} onDelete={handleDeleteTodo} />
-    </div>
+    <Container className="mt-5">
+    <Row className="justify-content-center">
+      <Col md={6}>
+        <h1 className="text-center mb-4">Todo App</h1>
+        <Form onSubmit={handleFormSubmit}>
+          <Form.Group>
+            <Form.Control
+              type="text"
+              placeholder="Enter todo"
+              value={inputText}
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit" >
+            Add Todo
+          </Button>
+        </Form>
+          <TodoList todos={todos} handleTodoDelete={handleTodoDelete} handleToggleStatus={handleToggleStatus}/>
+          </Col>
+      </Row>
+    </Container>
   );
 };
 
